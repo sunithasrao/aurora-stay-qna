@@ -16,7 +16,9 @@ def retrieve(query: str, k: int = 2,vectorstore=None) -> list[str]:
 def generate(query, retrieved_chunks,model) -> str:
 
     prompt = f"""
-    You are an AI assistant answering questions about medical insurance policies.
+    You are an AI assistant helping AuroraStay Hotels staff answer guest questions about hotel policies,
+    including room types, check-in and check-out, cancellations, refunds, additional charges, parking,
+    pets, amenities, guest conduct, and accessibility.
 
     User Query:
     {query}
@@ -26,17 +28,17 @@ def generate(query, retrieved_chunks,model) -> str:
 
     Rules:
     1. Use only information explicitly supported by the retrieved policy information.
-    2. Do not use outside knowledge, assumptions, or information not present in the retrieved policy information.
-    3. Include all relevant information needed to answer the query completely.
-    4. Do not omit important conditions, exclusions, limitations, exceptions, or coverage details.
-    5. Focus only on information directly relevant to the user's query.
-    6. Do not include unrelated information from the retrieved policy information.
-    7. Answer the user's specific question directly and ensure the response addresses what was asked.
-    8. Keep the answer concise, clear, and easy to understand.
-    9. Do not invent benefits, exclusions, limits, waiting periods, conditions, or coverage details.
+    2. Do not use outside knowledge, assumptions, or general hotel industry practices that are not present in the retrieved policy information.
+    3. Include all relevant information needed to answer the query completely. If the question has multiple parts, answer every part.
+    4. Do not omit important conditions, deadlines, fees, limits, exceptions, or approval requirements. Quote amounts, times, and limits exactly as written, including their units (for example, "per night", "per stay", "local property time").
+    5. Focus only on information directly relevant to the user's query. If the query names a property (for example, ASH-MIA Brickell), use only that property's details.
+    6. Do not include unrelated information from the retrieved policy information, such as details for other properties or rate plans that were not asked about.
+    7. Answer the user's specific question directly in the first sentence, then add the supporting conditions.
+    8. Keep the answer concise, clear, and easy for hotel staff to relay to a guest.
+    9. Do not invent fees, refund eligibility, deadlines, room features, amenities, or exceptions.
     10. If the information is insufficient, say:
         "The available policy documents do not contain enough information to answer this question."
-        If the retrieved information conflicts, clearly mention the conflict.
+        If the retrieved information genuinely conflicts, clearly mention the conflict. The same table or rule appearing in more than one document is not a conflict.
 
     Answer:
     """
